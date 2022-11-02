@@ -24,5 +24,6 @@ class User(db.Model):
         self.created_at=datetime.now()
         self.updated_at=datetime.now()
 
+    # 格式化返回类的名称
     def __repr__(self):
         return '<User %r>' % self.username

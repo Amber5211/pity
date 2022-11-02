@@ -1,6 +1,9 @@
 from app import pity
 from app.utils.logger import Log
-from app import dao
+from app.controller.auth.user import auth
+
+# 注册蓝图
+pity.register_blueprint(auth)
 
 
 
