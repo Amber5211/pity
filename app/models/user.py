@@ -6,7 +6,7 @@ class User(db.Model):
     id=db.Column(db.INT,primary_key=True,comment='自增主键')
     username=db.Column(db.String(16),unique=True,index=True,comment='用户名')
     name=db.Column(db.String(16),index=True,comment='姓名')
-    password=db.Column(db.String(32),unique=True,comment='密码')
+    password=db.Column(db.String(32),comment='密码')
     email=db.Column(db.String(64),unique=True,nullable=False,comment='邮箱')
     role=db.Column(db.INT,default=0,comment='角色 0:普通用户 1:组长 2:超级管理员')
     created_at=db.Column(db.DATETIME,nullable=False,comment='创建时间')
