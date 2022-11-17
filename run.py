@@ -1,9 +1,11 @@
 from app import pity
 from app.utils.logger import Log
 from app.controller.auth.user import auth
+from app.controller.request.http import req
 
 # 注册蓝图
 pity.register_blueprint(auth)
+pity.register_blueprint(req)
 
 
 
