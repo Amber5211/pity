@@ -80,6 +80,8 @@ class Request(object):
         :param msg: 返回的信息，默认为success
         :return:
         '''
+        response_headers={k: v for k,v in response_headers.items()}
+        request_headers={k: v for k,v in request_headers.items()}
         return {
             "status":status,
             "status_code":status_code,

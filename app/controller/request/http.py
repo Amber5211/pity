@@ -6,7 +6,7 @@ from app.middleware.HttpClient import Request
 req=Blueprint('request',__name__,url_prefix='/request')
 
 
-@req.route('/register',methods=['POST'])
+@req.route('/http',methods=['POST'])
 def http_request():
     data=request.get_json()
 
@@ -21,6 +21,6 @@ def http_request():
     body=data.get("body")
 
     headers=data.get("headers")
-    res=Request(url,data=body,headers=headers)
+    res=Request(url,json=body,headers=headers)
     response=res.request(method)
     return jsonify(dict(code=0,data=response,msg="操作成功"))
