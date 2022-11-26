@@ -25,7 +25,7 @@ class Request(object):
         if timer.seconds>0:
             return f"{timer.seconds}.{timer.microseconds//1000}s" # //  表示整数除法,返回不大于结果的一个最大的整数
 
-        return f"{timer.microseconds//100}s"
+        return f"{timer.microseconds//100}ms"
 
     #请求主方法
     def request(self,method:str):
@@ -33,6 +33,9 @@ class Request(object):
         :param method: 请求的方式
         :return:
         '''
+        status_code = 0
+        elapsed = "-1ms"
+
         try:
             # 根据method调用对应的请求方式
             if method.upper()=='GET': #upper()方法小写字母转化为大写字母
@@ -49,7 +52,7 @@ class Request(object):
             # 获取响应时间
             elapsed=Request.get_elapsed(response.elapsed)
             # 获取响应体
-            data=response.json()
+            data=self.get_response(response)
             # 状态码为200调用Request.response方法status为True
             return Request.response(True,200,data,response.headers,response.request.headers,elapsed=elapsed)
 
@@ -67,6 +70,14 @@ class Request(object):
     def post(self):
         return self.request("POST")
 
+    # 根据response返回的类型，返回对应的格式的数据
+    def get_response(self,response):
+        try:
+            return response.json
+
+        except:
+            return response.text
+
     @staticmethod
     def response(status,status_code=200,response=None,response_headers=None,
                  request_headers=None,elapsed=None,msg='success'):
@@ -80,8 +91,11 @@ class Request(object):
         :param msg: 返回的信息，默认为success
         :return:
         '''
-        response_headers={k: v for k,v in response_headers.items()}
-        request_headers={k: v for k,v in request_headers.items()}
+        if response_headers is not None:
+            response_headers={k: v for k,v in response_headers.items()}
+        if request_headers is not None:
+            request_headers={k: v for k,v in request_headers.items()}
+
         return {
             "status":status,
             "status_code":status_code,
@@ -91,4 +105,3 @@ class Request(object):
             "elapsed":elapsed,
             "msg":msg
         }
-        pass
