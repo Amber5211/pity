@@ -54,7 +54,8 @@ class Request(object):
             # 获取响应体
             data=self.get_response(response)
             # 状态码为200调用Request.response方法status为True
-            return Request.response(True,200,data,response.headers,response.request.headers,elapsed=elapsed)
+            print(response.cookies)
+            return Request.response(True,200,data,response.headers,response.request.headers,cookies=response.cookies,elapsed=elapsed)
 
         except Exception as e:
             # 报错调用Request.response方法返回报错信息
@@ -73,14 +74,14 @@ class Request(object):
     # 根据response返回的类型，返回对应的格式的数据
     def get_response(self,response):
         try:
-            return response.json
+            return response.json()
 
         except:
             return response.text
 
     @staticmethod
     def response(status,status_code=200,response=None,response_headers=None,
-                 request_headers=None,elapsed=None,msg='success'):
+                 request_headers=None,cookies=None,elapsed=None,msg='success'):
         '''
         :param status: 状态Ture或False
         :param status_code: 响应码，默认为200
@@ -95,6 +96,8 @@ class Request(object):
             response_headers={k: v for k,v in response_headers.items()}
         if request_headers is not None:
             request_headers={k: v for k,v in request_headers.items()}
+        if cookies is not None:
+            cookies={k: v for k,v in cookies.items()}
 
         return {
             "status":status,
@@ -102,6 +105,7 @@ class Request(object):
             "response":response,
             "response_headers":response_headers,
             "request_headers":request_headers,
+            "cookies":cookies,
             "elapsed":elapsed,
             "msg":msg
         }

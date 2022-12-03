@@ -1,7 +1,7 @@
 from app.models import db
 from datetime import datetime
 
-
+# 用户表
 class User(db.Model):
     id=db.Column(db.INT,primary_key=True,comment='自增主键')
     username=db.Column(db.String(16),unique=True,index=True,comment='用户名')

@@ -1,6 +1,6 @@
 from flask import Blueprint,request
 from flask import jsonify
-from app.controller.auth.UserDao import UserDao
+from app.dao.auth.UserDao import UserDao
 from app.handler.factory import ResponseFactory
 from app.middleware.Jwt import UserToken
 

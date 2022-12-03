@@ -18,3 +18,6 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 
+    # 用户角色配置
+    GUEST=0
+    ADMIN=2

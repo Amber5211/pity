@@ -16,15 +16,14 @@ class UserToken(object):
     def get_token(data):
         new_data=dict({'exp':datetime.utcnow()+timedelta(hours=EXPIRED_HOUR)},**data)
 
-        return jwt.encode(new_data,key=UserToken.key)
+        return jwt.encode(new_data, key=UserToken.key)
 
     # 解析token
     @staticmethod
     def parse_token(token):
         try:
-            return jwt.decode(token,key=UserToken.key)
-
-        except:
+            return jwt.decode(token,key=UserToken.key,algorithms='HS256')
+        except ExpiredSignatureError:
             raise Exception("token已过期, 请重新登录")
 
 

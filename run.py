@@ -3,6 +3,8 @@ from app.utils.logger import Log
 from app.controller.auth.user import auth
 from app.controller.request.http import req
 
+# from app import dao
+
 # 注册蓝图
 pity.register_blueprint(auth)
 pity.register_blueprint(req)
