@@ -20,4 +20,5 @@ class Config(object):
 
     # 用户角色配置
     GUEST=0
+    MANAGER=1
     ADMIN=2

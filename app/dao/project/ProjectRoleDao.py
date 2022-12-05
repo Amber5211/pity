@@ -16,7 +16,7 @@ class ProjectRoleDao(object):
         :return:
         '''
         try:
-            projects=ProjectRole.query.filter(user_id=user_id,deleted_at=None).all()
+            projects=ProjectRole.query.filter_by(user_id=user_id,deleted_at=None).all()
             return [p.id for p in projects],None
         except Exception as e:
             ProjectRoleDao.log.error(f"查询用户：{user_id}项目失败,{e}")
@@ -34,7 +34,7 @@ class ProjectRoleDao(object):
         :return:
         '''
         try:
-            role=ProjectRole.query.filter(user_id=user_id,project_id=project_id,project_role=project_role,deleted_at=None).first()
+            role=ProjectRole.query.filter_by(user_id=user_id,project_id=project_id,project_role=project_role,deleted_at=None).first()
 
             if role is not None:
                 # 说明用户已存在该项目

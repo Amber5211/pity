@@ -25,7 +25,10 @@ class ProjectDao(object):
             search=[Project.deleted_at== None]#定义查询条件的列表，filter查询参数匹配是“==”
             # 判断用户role是否是管理员,不是管理员查询用户所拥有的项目和owner为当前用户，private为私有的项目
             if role != pity.config.get("ADMIN"):
-                project_list=ProjectRoleDao.list_project_by_user(user)
+                project_list,err=ProjectRoleDao.list_project_by_user(user)
+                # 如果返回异常，抛出异常
+                if err is not None:
+                    raise err
                 search.append(or_(Project.id in project_list, Project.owner==user,Project.private==False))
             #有name参数，把name参数加入到询条件列表
             if name:
@@ -38,10 +41,10 @@ class ProjectDao(object):
 
         except Exception as e:
             ProjectDao.log.error(f"获取用户:{user}项目列表失败,{e}")
-            return 0,0,f"获取用户:{user}项目列表失败,{e}"
+            return [],0,f"获取用户:{user}项目列表失败,{e}"
 
     @staticmethod
-    def add_project(name,owner,user,private):
+    def add_project(name,owner,user,description,private):
         '''
         新增项目
         :param name: 项目名
@@ -54,16 +57,18 @@ class ProjectDao(object):
         try:
             # 查询项目是否已存在
             data=Project.query.filter_by(name=name,deleted_at=None).first()
-            if data is None:
+            if data is not None:
                 return '项目已存在'
             #新增项目
-            pr=Project(name,owner,user,private)
+            pr=Project(name,owner,user,description,private)
             db.session.add(pr)
-            db.session.commit(pr)
+            db.session.commit()
 
         except Exception as e:
             ProjectDao.log.error(f"新增项目:{name}失败,{e}")
-            return 0,0,f"新增项目:{name}失败,{e}"
+            return f"新增项目:{name}失败,{e}"
+
+        return None
 
 
 
