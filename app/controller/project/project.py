@@ -48,12 +48,12 @@ def insert_project(user_info):
         # 获取传参
         data=request.get_json()
         # 校验name和owner不能为空
-        if not data.get('name') or not data.get('owner'):
+        if not data.get('projectName') or not data.get('owner'):
             return jsonify(dict(code=101,msg='项目名称/项目负责人不能为空'))
         # 获取private，没获取到默认为False
         private=data.get('private',False)
         # 调用ProjectDao.add_project()新增项目
-        err=ProjectDao.add_project(data.get('name'),data.get('owner'),user_id,data.get('description',''),private)
+        err=ProjectDao.add_project(data.get('projectName'),data.get('owner'),user_id,data.get('description',''),private)
         # err不为None,新增失败，返回错误信息
         if err is not None:
             return jsonify(dict(code=100,msg=err))

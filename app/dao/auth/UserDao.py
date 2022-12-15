@@ -62,3 +62,18 @@ class UserDao(object):
         except Exception as e:
             UserDao.log.error(f'用户登录失败:{str(e)}')
             return None,str(e)
+
+
+    @staticmethod
+    def list_users():
+        '''
+        获取用户列表
+        :return:
+        '''
+        try:
+            users=User.query.filter_by(deleted_at=None).all()
+            return users,None
+
+        except Exception as e:
+            UserDao.log.error(f'获取用户列表失败：{str(e)}')
+            return [],str(e)
