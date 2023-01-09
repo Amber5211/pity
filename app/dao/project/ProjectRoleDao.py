@@ -50,3 +50,21 @@ class ProjectRoleDao(object):
             return f"添加项目用户失败,{e}"
 
         return None
+
+    @staticmethod
+    def list_role(project_id:int):
+        '''
+        根据项目id获取项目的角色
+        :param project_id:项目id
+        :return:
+        '''
+        try:
+            # 根据project_id查询ProjectRole表数据
+            roles=ProjectRole.query.filter_by(project_id=project_id,deleted_at=None).all()
+
+            return roles,None
+
+        except Exception as e:
+            # 查询失败，返回错误信息
+            ProjectRoleDao.log.error(f"查询项目：{project_id}角色列表失败，{e}")
+            return [],f"查询项目：{project_id}角色列表失败，{e}"
